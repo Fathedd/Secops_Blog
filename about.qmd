@@ -15,5 +15,12 @@ about:
       href: https://github.com/Rock3tRaccoon
 
 ---
-
 About this blog
+
+
+This blog documents my journey in the Security Realm. Offering both Technical and Shop talk.
+I have been doing Security Operations for 11 years. Starting off with Blackhat operations when I was a lot younger.
+
+Nowadays I ethically explore both Red and Blue team topics. Some in depth. Stick around, you may learn something or find a resource not previously known!
+
+Languages: Rust, C/C++, Ruby, Solidity, Python, Haskel 
