@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Rock3t">
+<meta name="dcterms.date" content="2024-04-24">
 
-<title>Researcher’s Blog - SecOps</title>
+<title>Researcher’s Blog - Flashing Embedded Routers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +68,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Researcher’s Blog</span>
     </a>
   </div>
@@ -149,7 +91,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -172,152 +114,126 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">SecOps</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Flashing Embedded Routers</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Embedded Systems</div>
+                <div class="quarto-category">Blue</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Rock3t </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 24, 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Blue">Blue <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Embedded Systems">Embedded Systems <span class="quarto-category-count">(1)</span></div><div class="category" data-category="analysis">analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p><img src="thumbnail.png" class="img-fluid"></p>
+<section id="what-is-ddwrt" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-ddwrt">What is DDWRT?</h3>
+<p>DD-WRT is a Linux-based firmware for embedded wireless routers and access points, originally designed for the Linksys WRT54G series but now compatible with a wide range of models. Developed by Sebastian Gottschall, also known as “BrainSlayer,” DD-WRT turns a basic off the shelf router into a enterprise beast to be reckoned with. Features include, advanced quality of service, wireless bridging, Radius Authentication, VLANs, SIP, support for VPNs. (if routers powerful enough you could even run snort from the router hardware.) This open-source firmware provides a robust alternative to standard manufacturer firmware, aiming to increase the functionality and performance of supported devices. The project, which began as a response to commercial firmware that limited user control, continues to evolve, offering features not found in original or even other third-party firmware solutions</p>
+<p>Other embedded System alternative (only supports broadcom chipsets): <a href="https://www.freshtomato.org/">Fresh Tomato</a></p>
+</section>
+<section id="installationflash" class="level3">
+<h3 class="anchored" data-anchor-id="installationflash">Installation/Flash</h3>
+<section id="step-1-download-the-correct-firmware" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-download-the-correct-firmware">Step 1: Download the Correct Firmware</h4>
+<p>Navigate to the router database. Visit the&nbsp;<a href="https://dd-wrt.com/support/router-database/">DD-WRT Router Database</a>&nbsp;and search the database to find the firmware specific to your router model. If it does not show up your device is not supported. However, it’s important to note:</p>
+<ul>
+<li><p><strong>Never download router firmware files directly from the router database.</strong>&nbsp;Always check the forums for the latest advice and links to firmware as these are often more up to date and reliable.</p></li>
+<li><p><strong>There are multiple files, Init flash and update flash. The initial flash installs ddwrt onto your router, the next ‘flash’ is updating ddwrt</strong></p></li>
+</ul>
+</section>
+<section id="step-2-fish-the-site-for-the-forum-post-for-your-installation" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-fish-the-site-for-the-forum-post-for-your-installation">Step 2: Fish the site for the forum post for your installation</h4>
+<p>You will find this forum to be a bit messy. But don’t be scared its relatively simple. In the database you will see a link “DD-WRT Wiki: Installation Instructions”</p>
+<p><img src="artifact2.png" class="img-fluid"></p>
+<p>Eventually we will find the proper install link And land on this page:</p>
+<p><img src="artifact3.png" class="img-fluid"></p>
+<p><img src="artifact4.png" class="img-fluid"></p>
+<p>Click the latest build it, it will be the build-date and firmware version:</p>
+<p><img src="artifact5.png" class="img-fluid"> <img src="artifact6.png" class="img-fluid"></p>
+<p>Find your router:</p>
+<p><img src="artifact7.png" class="img-fluid"></p>
+<p>Download both files. The factory-to-ddwrt will be the file you use for NetGear Genie (or whatever your routers gui’s name is)</p>
+<p><img src="artifact8.png" class="img-fluid"></p>
+</section>
+<section id="step-3-prepare-for-installation" class="level4">
+<h4 class="anchored" data-anchor-id="step-3-prepare-for-installation">Step 3: Prepare for Installation</h4>
+<ul>
+<li><strong>Backup your current settings:</strong>&nbsp;Before proceeding, save your current router settings just in case you need to revert.</li>
+<li><strong>Reset your router to factory defaults:</strong>&nbsp;This can prevent issues during the flashing process. (Proceed to your routers documentation for that)</li>
+</ul>
+</section>
+<section id="step-4-flash-firmware-via-web-gui" class="level4">
+<h4 class="anchored" data-anchor-id="step-4-flash-firmware-via-web-gui">Step 4: Flash Firmware via Web GUI</h4>
+<ol type="1">
+<li>Connect your computer to the router using an Ethernet cable.</li>
+<li>Access your router’s default admin page (usually 192.168.1.1).</li>
+<li>Navigate to the “Administration” tab and select “Firmware Upgrade”.</li>
+<li>Click “Browse” and select the DD-WRT firmware file you downloaded.</li>
+<li>Click “Upgrade” and wait for the process to complete.&nbsp;<strong>Do not interrupt this process as it might brick your router.</strong></li>
+</ol>
+<p>My Routers Gui looks like this:</p>
+<p><img src="artifact1.png" class="img-fluid"></p>
+<p>For more information about bricking visit <a href="https://dd-wrt.com">DD-WRT wiki</a></p>
+</section>
+<section id="step-5-after-installation" class="level4">
+<h4 class="anchored" data-anchor-id="step-5-after-installation">Step 5: After Installation</h4>
+<ul>
+<li><strong>Wait at least 5 minutes</strong>&nbsp;after the upgrade tool says it is complete to ensure the changes are fully applied.</li>
+<li>Reboot your router manually by unplugging it from power and plugging it back in.</li>
+<li>Access the DD-WRT control panel by entering 192.168.1.1 in your browser.</li>
+</ul>
+</section>
+<section id="step-6-final-setup" class="level4">
+<h4 class="anchored" data-anchor-id="step-6-final-setup">Step 6: Final Setup</h4>
+<ul>
+<li>Reconfigure your router settings according to your needs. You might want to set up security settings, Wi-Fi passwords, and network names (SSIDs) again.</li>
+<li>Explore DD-WRT’s features such as setting up a VPN, adjusting QoS settings, or setting up a guest network.</li>
+</ul>
+</section>
+<section id="troubleshooting" class="level4">
+<h4 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h4>
+<p>If you encounter issues:</p>
+<ul>
+<li>Check if your router is truly bricked by trying to access the recovery mode.</li>
+<li>Refer to the&nbsp;<a href="https://wiki.dd-wrt.com/wiki/index.php/Installation">DD-WRT wiki</a>&nbsp;for troubleshooting tips or post a question in the DD-WRT forums.</li>
+</ul>
+<p>By following these steps, you should be able to successfully install DD-WRT on your router and enjoy the enhanced features it offers. Remember, always proceed with caution and follow the instructions specific to your router model.</p>
 
 
+</section>
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Embedded Systems,Blue" data-listing-date-sort="1713931200000" data-listing-file-modified-sort="1713977405664" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="602">
-<div class="thumbnail">
-<p><a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external"></a></p><a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/ddwrt-embedded-firmware/thumbnail.png"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external">Flashing Embedded Routers</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Embedded Systems'); return false;">
-Embedded Systems
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Blue'); return false;">
-Blue
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external">DD-WRT is a Linux-based firmware for embedded wireless routers and access points, originally designed for the Linksys WRT54G series but now compatible with a wide range of…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/ddwrt-embedded-firmware/index.html" class="no-external">
-<div class="listing-date">
-Apr 24, 2024
-</div>
-<div class="listing-author">
-Rock3t
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="news,code,analysis" data-listing-date-sort="1713844800000" data-listing-file-modified-sort="1713983892237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="7">
-<div class="thumbnail">
-<p><a href="./posts/post-with-code/index.html" class="no-external"></a></p><a href="./posts/post-with-code/index.html" class="no-external">
-<p><img src="./posts/post-with-code/image.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/post-with-code/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/post-with-code/index.html" class="no-external">Post With Code</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/post-with-code/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('analysis'); return false;">
-analysis
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/post-with-code/index.html" class="no-external">This is a post with executable code.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/post-with-code/index.html" class="no-external">
-<div class="listing-date">
-Apr 23, 2024
-</div>
-<div class="listing-author">
-Harlow Malloc
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="news" data-listing-date-sort="1713585600000" data-listing-file-modified-sort="1713983892237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="32">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/welcome/thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome To My Blog</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">This is the first post in a Quarto blog. Welcome!</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-Apr 20, 2024
-</div>
-<div class="listing-author">
-Tristan O’Malley
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -2,12 +2,12 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "main"
+  title: "Researcher's Blog"
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/rock3traccoon
       - icon: twitter
         href: https://twitter.com
 format:

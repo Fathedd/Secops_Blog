@@ -10,5 +10,8 @@
   },
   "posts/post-with-code/index.qmd": {
     "index.html": "cdc473b3"
+  },
+  "posts/ddwrt-embedded-firmware/index.qmd": {
+    "index.html": "b25f890b"
   }
 }

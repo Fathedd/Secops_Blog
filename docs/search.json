@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SecOps",
+    "section": "",
+    "text": "Flashing Embedded Routers\n\n\n\n\n\n\nEmbedded Systems\n\n\nBlue\n\n\n\n\n\n\n\n\n\nApr 24, 2024\n\n\nRock3t\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nApr 23, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nApr 20, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/ddwrt-embedded-firmware/index.html",
+    "href": "posts/ddwrt-embedded-firmware/index.html",
+    "title": "Flashing Embedded Routers",
+    "section": "",
+    "text": "What is DDWRT?\nDD-WRT is a Linux-based firmware for embedded wireless routers and access points, originally designed for the Linksys WRT54G series but now compatible with a wide range of models. Developed by Sebastian Gottschall, also known as “BrainSlayer,” DD-WRT turns a basic off the shelf router into a enterprise beast to be reckoned with. Features include, advanced quality of service, wireless bridging, Radius Authentication, VLANs, SIP, support for VPNs. (if routers powerful enough you could even run snort from the router hardware.) This open-source firmware provides a robust alternative to standard manufacturer firmware, aiming to increase the functionality and performance of supported devices. The project, which began as a response to commercial firmware that limited user control, continues to evolve, offering features not found in original or even other third-party firmware solutions\nOther embedded System alternative (only supports broadcom chipsets): Fresh Tomato\n\n\nInstallation/Flash\n\nStep 1: Download the Correct Firmware\nNavigate to the router database. Visit the DD-WRT Router Database and search the database to find the firmware specific to your router model. If it does not show up your device is not supported. However, it’s important to note:\n\nNever download router firmware files directly from the router database. Always check the forums for the latest advice and links to firmware as these are often more up to date and reliable.\nThere are multiple files, Init flash and update flash. The initial flash installs ddwrt onto your router, the next ‘flash’ is updating ddwrt\n\n\n\nStep 2: Fish the site for the forum post for your installation\nYou will find this forum to be a bit messy. But don’t be scared its relatively simple. In the database you will see a link “DD-WRT Wiki: Installation Instructions”\n\nEventually we will find the proper install link And land on this page:\n\n\nClick the latest build it, it will be the build-date and firmware version:\n \nFind your router:\n\nDownload both files. The factory-to-ddwrt will be the file you use for NetGear Genie (or whatever your routers gui’s name is)\n\n\n\nStep 3: Prepare for Installation\n\nBackup your current settings: Before proceeding, save your current router settings just in case you need to revert.\nReset your router to factory defaults: This can prevent issues during the flashing process. (Proceed to your routers documentation for that)\n\n\n\nStep 4: Flash Firmware via Web GUI\n\nConnect your computer to the router using an Ethernet cable.\nAccess your router’s default admin page (usually 192.168.1.1).\nNavigate to the “Administration” tab and select “Firmware Upgrade”.\nClick “Browse” and select the DD-WRT firmware file you downloaded.\nClick “Upgrade” and wait for the process to complete. Do not interrupt this process as it might brick your router.\n\nMy Routers Gui looks like this:\n\nFor more information about bricking visit DD-WRT wiki\n\n\nStep 5: After Installation\n\nWait at least 5 minutes after the upgrade tool says it is complete to ensure the changes are fully applied.\nReboot your router manually by unplugging it from power and plugging it back in.\nAccess the DD-WRT control panel by entering 192.168.1.1 in your browser.\n\n\n\nStep 6: Final Setup\n\nReconfigure your router settings according to your needs. You might want to set up security settings, Wi-Fi passwords, and network names (SSIDs) again.\nExplore DD-WRT’s features such as setting up a VPN, adjusting QoS settings, or setting up a guest network.\n\n\n\nTroubleshooting\nIf you encounter issues:\n\nCheck if your router is truly bricked by trying to access the recovery mode.\nRefer to the DD-WRT wiki for troubleshooting tips or post a question in the DD-WRT forums.\n\nBy following these steps, you should be able to successfully install DD-WRT on your router and enjoy the enhanced features it offers. Remember, always proceed with caution and follow the instructions specific to your router model."
+  },
+  {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
@@ -7,11 +21,11 @@
     "text": "This is a post with executable code."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "main",
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nApr 23, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nApr 20, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
     "objectID": "about.html",
@@ -19,12 +33,5 @@
     "title": "About",
     "section": "",
     "text": "About this blog"
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   }
 ]
