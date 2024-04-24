@@ -2,9 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/ddwrt-embedded-firmware/index.html",
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/ddwrt-embedded-firmware/index.html"
     ]
   }
 ]
