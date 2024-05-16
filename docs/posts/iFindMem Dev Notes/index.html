@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Rock3t">
-<meta name="dcterms.date" content="2024-04-24">
+<meta name="dcterms.date" content="2024-05-16">
 
-<title>Researcher’s Blog - Flashing Embedded Routers</title>
+<title>Researcher’s Blog - iFindMem Development</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -115,10 +115,11 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Flashing Embedded Routers</h1>
+      <h1 class="title">iFindMem Development</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">Embedded Systems</div>
-                <div class="quarto-category">Blue</div>
+                <div class="quarto-category">iOS</div>
+                <div class="quarto-category">Development</div>
+                <div class="quarto-category">OffSec</div>
               </div>
                   </div>
   </div>
@@ -136,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 24, 2024</p>
+        <p class="date">May 16, 2024</p>
       </div>
     </div>
     
@@ -156,81 +157,48 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p><img src="thumbnail.png" class="img-fluid"></p>
-<section id="what-is-ddwrt" class="level3">
-<h3 class="anchored" data-anchor-id="what-is-ddwrt">What is DDWRT?</h3>
-<p>DD-WRT is a Linux-based firmware for embedded wireless routers and access points, originally designed for the Linksys WRT54G series but now compatible with a wide range of models. Developed by Sebastian Gottschall, also known as “BrainSlayer,” DD-WRT turns a basic off the shelf router into a enterprise beast to be reckoned with. Features include, advanced quality of service, wireless bridging, Radius Authentication, VLANs, SIP, support for VPNs. (if routers powerful enough you could even run snort from the router hardware.) This open-source firmware provides a robust alternative to standard manufacturer firmware, aiming to increase the functionality and performance of supported devices. The project, which began as a response to commercial firmware that limited user control, continues to evolve, offering features not found in original or even other third-party firmware solutions</p>
-<p>Other embedded System alternative (only supports broadcom chipsets): <a href="https://www.freshtomato.org/">Fresh Tomato</a></p>
+<section id="why-did-i-get-into-ios" class="level3">
+<h3 class="anchored" data-anchor-id="why-did-i-get-into-ios">Why did I get into iOS?</h3>
+<p>To be 100% honest. I have zero clue why I am so into iOS. I think it stims from being a child wanting my phone to do something not many iPhones do. This blog post is going to be not as structured as the others. We are mostly going to talk about the notes I took, what I learned going down this rabbit hole, and how I applied what I learned. Hopefully seeing how someone else goes about business will help yourself.</p>
+<p>I’ve never really worked with a project this big before so I had a lot to learn.</p>
 </section>
-<section id="installationflash" class="level3">
-<h3 class="anchored" data-anchor-id="installationflash">Installation/Flash</h3>
-<section id="step-1-download-the-correct-firmware" class="level4">
-<h4 class="anchored" data-anchor-id="step-1-download-the-correct-firmware">Step 1: Download the Correct Firmware</h4>
-<p>Navigate to the router database. Visit the&nbsp;<a href="https://dd-wrt.com/support/router-database/">DD-WRT Router Database</a>&nbsp;and search the database to find the firmware specific to your router model. If it does not show up your device is not supported. However, it’s important to note:</p>
-<ul>
-<li><p><strong>Never download router firmware files directly from the router database.</strong>&nbsp;Always check the forums for the latest advice and links to firmware as these are often more up to date and reliable.</p></li>
-<li><p><strong>There are multiple files, Init flash and update flash. The initial flash installs ddwrt onto your router, the next ‘flash’ is updating ddwrt</strong></p></li>
-</ul>
+<section id="whats-the-goal" class="level1">
+<h1>Whats the Goal?</h1>
+<p>The goal was to be able to choose a process and monitor/sparse the memory wtih r/w permissions of protected ipas. There isn’t really a tweak that does this, and the free ones I found were, not using anything useful for bypassing or closed source. I started github diving and found a 5yr old project RevelariOS. I took a look at the code compiled it, and realized “this is not a bad boilerplate to continue with”, and thats where this journey started.</p>
 </section>
-<section id="step-2-fish-the-site-for-the-forum-post-for-your-installation" class="level4">
-<h4 class="anchored" data-anchor-id="step-2-fish-the-site-for-the-forum-post-for-your-installation">Step 2: Fish the site for the forum post for your installation</h4>
-<p>You will find this forum to be a bit messy. But don’t be scared its relatively simple. In the database you will see a link “DD-WRT Wiki: Installation Instructions”</p>
-<p><img src="artifact2.png" class="img-fluid"></p>
-<p>Eventually we will find the proper install link And land on this page:</p>
-<p><img src="artifact3.png" class="img-fluid"></p>
-<p><img src="artifact4.png" class="img-fluid"></p>
-<p>Click the latest build it, it will be the build-date and firmware version:</p>
-<p><img src="artifact5.png" class="img-fluid"> <img src="artifact6.png" class="img-fluid"></p>
-<p>Find your router:</p>
-<p><img src="artifact7.png" class="img-fluid"></p>
-<p>Download both files. The factory-to-ddwrt will be the file you use for NetGear Genie (or whatever your routers gui’s name is)</p>
-<p><img src="artifact8.png" class="img-fluid"></p>
+<section id="structure-of-the-orginal-project" class="level1">
+<h1>Structure of the orginal project</h1>
+<p>The orginal project structure is a little weird.</p>
+<p><img src="image.png" class="img-fluid"></p>
+<p>Overall its a iOS application/tool so its going to have the default iOS layout. But whats weird is the binary/tool was pre-compiled and just thrown into the package layout. So you’re not actually compiling and installing the package. I don’t like this. This is where the Theos community comes in (specifically Leptos).</p>
 </section>
-<section id="step-3-prepare-for-installation" class="level4">
-<h4 class="anchored" data-anchor-id="step-3-prepare-for-installation">Step 3: Prepare for Installation</h4>
-<ul>
-<li><strong>Backup your current settings:</strong>&nbsp;Before proceeding, save your current router settings just in case you need to revert.</li>
-<li><strong>Reset your router to factory defaults:</strong>&nbsp;This can prevent issues during the flashing process. (Proceed to your routers documentation for that)</li>
-</ul>
+<section id="trying-to-compile-the-binary" class="level1">
+<h1>Trying to Compile the binary</h1>
+<p>This became a nightmare for me. Half of the code was outdated and I’ve never worked with something like this before, so I went searching for people that have haha. within a bit we had some solutions to the issues I had. Screenshots provided below to all of the madness.</p>
+<hr>
+<p>Debug Dump:</p>
+<p>```==&gt; Compiling iFindMemCore.c (arm64e)… iFindMemCore.c:65:13: error: call to undeclared library function ‘exit’ with type ‘void (int) <strong>attribute</strong>((noreturn))’; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] EXIT ^ ./mem.h:22:52: note: expanded from macro ‘EXIT’ #define EXIT printf(ERROR”Exiting iFindMem…“); exit(0); ^ iFindMemCore.c:65:13: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ‘exit’ ./mem.h:22:52: note: expanded from macro ‘EXIT’ #define EXIT printf(ERROR”Exiting iFindMem…“); exit(0); ^ iFindMemCore.c:76:25: error: call to undeclared library function ‘strtol’ with type ‘long (const char <em>, char <strong>, int)’; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] pid = (int) strtol(args[1], NULL, 0); ^ iFindMemCore.c:76:25: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ’strtol’ iFindMemCore.c:113:56: error: incompatible pointer types passing ’vm_address_t (<em>)[256]’ (aka ’unsigned long (</em>)[256]’) to parameter of type ’vm_address_t </strong>’ (aka ’unsigned long <strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, false, false, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t <em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:123:55: error: incompatible pointer types passing ’vm_address_t (</em>)[256]’ (aka ’unsigned long (<em>)[256]’) to parameter of type ’vm_address_t <strong>’ (aka ’unsigned long </strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, false, true, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t </em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:133:55: error: incompatible pointer types passing ’vm_address_t (<em>)[256]’ (aka ’unsigned long (</em>)[256]’) to parameter of type ’vm_address_t </strong>’ (aka ’unsigned long <strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, true, false, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t <em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:143:54: error: incompatible pointer types passing ’vm_address_t (</em>)[256]’ (aka ’unsigned long (<em>)[256]’) to parameter of type ’vm_address_t <strong>’ (aka ’unsigned long </strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, true, true, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t </em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:152:37: error: incompatible pointer to integer conversion passing ’vm_address_t[256]’ (aka ’unsigned long[256]’) to parameter of type ’vm_address_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] write_data(task, false, out, args[1]); ^~~ ./mem.h:50:39: note: passing argument to parameter ’addr’ here vm_address_t addr, ^ iFindMemCore.c:159:36: error: incompatible pointer to integer conversion passing ’vm_address_t[256]’ (aka ’unsigned long[256]’) to parameter of type ’vm_address_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] write_data(task, true, out, args[1]); ^~~ ./mem.h:50:39: note: passing argument to parameter ’addr’ here vm_address_t addr, ^ iFindMemCore.c:12:10: error: unused variable ’in’ [-Werror,-Wunused-variable] char in[MAX_INPUT_DATA]; ^ 9 errors generated. make[4]: </strong></em> [/home/zen/.libs/~/theos/makefiles/instance/rules.mk:309: /home/zen/Documents/gitrepos/jbtweaks/iFindMem/iFindMem-App/.theos/obj/debug/arm64e/iFindMemCore.c.0999093b.o] Error 1 ==&gt; Compiling iFindMemCore.c (arm64)… iFindMemCore.c:65:13: error: call to undeclared library function ’exit’ with type ‘void (int) <strong>attribute</strong>((noreturn))’; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] EXIT ^ ./mem.h:22:52: note: expanded from macro ‘EXIT’ #define EXIT printf(ERROR”Exiting iFindMem…“); exit(0); ^ iFindMemCore.c:65:13: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ‘exit’ ./mem.h:22:52: note: expanded from macro ‘EXIT’ #define EXIT printf(ERROR”Exiting iFindMem…“); exit(0); ^ iFindMemCore.c:76:25: error: call to undeclared library function ‘strtol’ with type ‘long (const char <em>, char <strong>, int)’; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] pid = (int) strtol(args[1], NULL, 0); ^ iFindMemCore.c:76:25: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ’strtol’ iFindMemCore.c:113:56: error: incompatible pointer types passing ’vm_address_t (<em>)[256]’ (aka ’unsigned long (</em>)[256]’) to parameter of type ’vm_address_t </strong>’ (aka ’unsigned long <strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, false, false, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t <em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:123:55: error: incompatible pointer types passing ’vm_address_t (</em>)[256]’ (aka ’unsigned long (<em>)[256]’) to parameter of type ’vm_address_t <strong>’ (aka ’unsigned long </strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, false, true, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t </em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:133:55: error: incompatible pointer types passing ’vm_address_t (<em>)[256]’ (aka ’unsigned long (</em>)[256]’) to parameter of type ’vm_address_t </strong>’ (aka ’unsigned long <strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, true, false, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t <em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:143:54: error: incompatible pointer types passing ’vm_address_t (</em>)[256]’ (aka ’unsigned long (<em>)[256]’) to parameter of type ’vm_address_t <strong>’ (aka ’unsigned long </strong>’) [-Werror,-Wincompatible-pointer-types] search_data(task, true, true, base, end, &amp;out, &amp;resultnum, args[1]); ^~~~ ./mem.h:59:41: note: passing argument to parameter ’outaddr’ here vm_address_t </em>outaddr[SEARCH_MAX], ^ iFindMemCore.c:152:37: error: incompatible pointer to integer conversion passing ’vm_address_t[256]’ (aka ’unsigned long[256]’) to parameter of type ’vm_address_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] write_data(task, false, out, args[1]); ^~~ ./mem.h:50:39: note: passing argument to parameter ’addr’ here vm_address_t addr, ^ iFindMemCore.c:159:36: error: incompatible pointer to integer conversion passing ’vm_address_t[256]’ (aka ’unsigned long[256]’) to parameter of type ’vm_address_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] write_data(task, true, out, args[1]); ^~~ ./mem.h:50:39: note: passing argument to parameter ’addr’ here vm_address_t addr, ^ iFindMemCore.c:12:10: error: unused variable ’in’ [-Werror,-Wunused-variable] char in[MAX_INPUT_DATA]; ^ 9 errors generated. make[4]: </strong></em> [/home/zen/.libs/~/theos/makefiles/instance/rules.mk:309: /home/zen/Documents/gitrepos/jbtweaks/iFindMem/iFindMem-App/.theos/obj/debug/arm64/iFindMemCore.c.79c9a250.o] Error 1 ==&gt; Compiling mem.c (arm64)… mem.c:66:40: error: format specifies type ’unsigned long’ but the argument has type ‘byte_t’ (aka ‘unsigned char’) [-Werror,-Wformat] printf(”%lx “, readOut[i]); ~~~ ^~~~~~~~~~ %hhx mem.c:115:38: error: call to undeclared library function ‘strtol’ with type ‘long (const char <em>, char <strong>, int)’; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] writebyte[i] = (uint8_t) strtol(tocmpbyte[i], NULL, 16); ^ mem.c:115:38: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ’strtol’ mem.c:118:37: error: incompatible pointer to integer conversion passing ’byte_t (<em>)[strlen(in) / 2]’ (aka ’unsigned char (</em>)[strlen(in) / 2]’) to parameter of type ’vm_offset_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] kret = vm_write(task, addr, &amp;writebyte, sizeof(writebyte)); ^~~~~~~~~~ /home/zen/.libs/~/theos/sdks/iPhoneOS16.5.sdk/usr/include/mach/vm_map.h:184:14: note: passing argument to parameter ’data’ here vm_offset_t data, ^ mem.c:127:37: error: incompatible pointer to integer conversion passing ’byte_t (<em>)[strlen(in)]’ (aka ’unsigned char (</em>)[strlen(in)]’) to parameter of type ’vm_offset_t’ (aka ’unsigned long’) [-Werror,-Wint-conversion] kret = vm_write(task, addr, &amp;writebyte, sizeof(writebyte)); ^~~~~~~~~~ /home/zen/.libs/~/theos/sdks/iPhoneOS16.5.sdk/usr/include/mach/vm_map.h:184:14: note: passing argument to parameter ’data’ here vm_offset_t data, ^ mem.c:98:12: error: unused variable ’bytes’ [-Werror,-Wunused-variable] size_t bytes = strlen(in); ^ mem.c:194:38: error: incompatible integer to pointer conversion assigning to ’vm_address_t <em>’ (aka ’unsigned long </em>’) from ’unsigned long’ [-Werror,-Wint-conversion] <em>outaddr = baseaddr+i; ^ ~~~~~~~~~~ mem.c:199:53: error: incompatible integer to pointer conversion assigning to ’vm_address_t </em>’ (aka ’unsigned long <em>’) from ’unsigned long’ [-Werror,-Wint-conversion] </em>(outaddr + foundtotal) = baseaddr+i; ^ ~~~~~~~~~~ 7 errors generated. make[4]: </strong></em> [/home/zen/.libs/~/theos/makefiles/instance/rules.mk:309: /home/zen/Documents/gitrepos/jbtweaks/iFindMem/iFindMem-App/.theos/obj/debug/arm64/mem.c.79c9a250.o] Error 1 ==&gt; Compiling mem.c (arm64e)… mem.c:66:40: error: format specifies type ’unsigned long’ but the argument has type ‘byte_t’ (aka ‘unsigned char’) [-Werror,-Wformat] printf(”%lx “, readOut[i]); ~~~ ^~~~~~~~~~ %hhx mem.c:115:38: error: call to undeclared library function ‘strtol’ with type ’long (const char *, char **, int)‘; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] writebyte[i] = (uint8_t) strtol(tocmpbyte[i], NULL, 16); ^ mem.c:115:38: note: include the header &lt;stdlib.h&gt; or explicitly provide a declaration for ’strtol’ mem.c:118:37: error: incompatible pointer to integer conversion passing ‘byte_t (<em>)[strlen(in) / 2]’ (aka ’unsigned char (</em>)[strlen(in) / 2]’) to parameter of type ‘vm_offset_t’ (aka ‘unsigned long’) [-Werror,-Wint-conversion] kret = vm_write(task, addr, &amp;writebyte, sizeof(writebyte)); ^~~~~~~~~~ /home/zen/.libs/~/theos/sdks/iPhoneOS16.5.sdk/usr/include/mach/vm_map.h:184:14: note: passing argument to parameter ‘data’ here vm_offset_t data, ^ mem.c:127:37: error: incompatible pointer to integer conversion passing ‘byte_t (<em>)[strlen(in)]’ (aka ’unsigned char (</em>)[strlen(in)]’) to parameter of type ‘vm_offset_t’ (aka ‘unsigned long’) [-Werror,-Wint-conversion] kret = vm_write(task, addr, &amp;writebyte, sizeof(writebyte)); ^~~~~~~~~~ /home/zen/.libs/~/theos/sdks/iPhoneOS16.5.sdk/usr/include/mach/vm_map.h:184:14: note: passing argument to parameter ‘data’ here vm_offset_t data, ^ mem.c:98:12: error: unused variable ‘bytes’ [-Werror,-Wunused-variable] size_t bytes = strlen(in); ^ mem.c:194:38: error: incompatible integer to pointer conversion assigning to ‘vm_address_t <em>’ (aka ’unsigned long </em>’) from ‘unsigned long’ [-Werror,-Wint-conversion] <em>outaddr = baseaddr+i; ^ ~~~~~~~~~~ mem.c:199:53: error: incompatible integer to pointer conversion assigning to ‘vm_address_t <em>’ (aka ’unsigned long </em>’) from ‘unsigned long’ [-Werror,-Wint-conversion] </em>(outaddr + foundtotal) = baseaddr+i;</p>
+<hr>
+<p>Yeah So This was a mess…</p>
 </section>
-<section id="step-4-flash-firmware-via-web-gui" class="level4">
-<h4 class="anchored" data-anchor-id="step-4-flash-firmware-via-web-gui">Step 4: Flash Firmware via Web GUI</h4>
-<ol type="1">
-<li>Connect your computer to the router using an Ethernet cable.</li>
-<li>Access your router’s default admin page (usually 192.168.1.1).</li>
-<li>Navigate to the “Administration” tab and select “Firmware Upgrade”.</li>
-<li>Click “Browse” and select the DD-WRT firmware file you downloaded.</li>
-<li>Click “Upgrade” and wait for the process to complete.&nbsp;<strong>Do not interrupt this process as it might brick your router.</strong></li>
-</ol>
-<p>My Routers Gui looks like this:</p>
-<p><img src="artifact1.png" class="img-fluid"></p>
-<p>For more information about bricking visit <a href="https://dd-wrt.com">DD-WRT wiki</a></p>
+<section id="resolving-the-garbage-pile-mess" class="level1">
+<h1>Resolving the Garbage Pile mess</h1>
+<p>After 3 people (Mostly the Theos community) resloving this hot pile. We finally got a working build.</p>
+<p><img src="image3.png" class="img-fluid"> <img src="image4.png" class="img-fluid"></p>
 </section>
-<section id="step-5-after-installation" class="level4">
-<h4 class="anchored" data-anchor-id="step-5-after-installation">Step 5: After Installation</h4>
-<ul>
-<li><strong>Wait at least 5 minutes</strong>&nbsp;after the upgrade tool says it is complete to ensure the changes are fully applied.</li>
-<li>Reboot your router manually by unplugging it from power and plugging it back in.</li>
-<li>Access the DD-WRT control panel by entering 192.168.1.1 in your browser.</li>
-</ul>
+<section id="okay-cool-a-tool-that-kinda-works" class="level1">
+<h1>Okay cool, a tool that… kinda works</h1>
+<p>The frontend application is null void. It will boot but preform zero tasks. The cli however does work, kinda. There is no proper tty to remember commands</p>
+<p>The cli is really slow. Also have no way to fetch pids from within it, and doing that with</p>
+<p>ps aux | grep containers | grep my ass | awk someone elses ass {FS = ” “;}{pid = $2;cid = $7; path = substr($11, index($11,</p>
+<p>yeah Im not doing that. I first wrote a shell script but… that wasn’t enough for me either. So I create another theos package iProcDump to nicely list all of processess with KERN_PROC, nicely sparsing it listing PIDS and Process name. I whipped it up pretty quickly being warmed up from the iFindMem. At some point it would be added to the main application.</p>
 </section>
-<section id="step-6-final-setup" class="level4">
-<h4 class="anchored" data-anchor-id="step-6-final-setup">Step 6: Final Setup</h4>
-<ul>
-<li>Reconfigure your router settings according to your needs. You might want to set up security settings, Wi-Fi passwords, and network names (SSIDs) again.</li>
-<li>Explore DD-WRT’s features such as setting up a VPN, adjusting QoS settings, or setting up a guest network.</li>
-</ul>
-</section>
-<section id="troubleshooting" class="level4">
-<h4 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h4>
-<p>If you encounter issues:</p>
-<ul>
-<li>Check if your router is truly bricked by trying to access the recovery mode.</li>
-<li>Refer to the&nbsp;<a href="https://wiki.dd-wrt.com/wiki/index.php/Installation">DD-WRT wiki</a>&nbsp;for troubleshooting tips or post a question in the DD-WRT forums.</li>
-</ul>
-<p>By following these steps, you should be able to successfully install DD-WRT on your router and enjoy the enhanced features it offers. Remember, always proceed with caution and follow the instructions specific to your router model.</p>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>There is a lot to be done as I would like to see some sort of decompiler like rizin or ghidra, being able to be used directly. After running iFindMem and find interesting memory addresses, you can start messing with them in a debugger/decompiler right away.</p>
+<p>I at some point have to go back to pwn related stuff, and especially revist assembly to get more into iOS Exploit/Jailbreak Development. I will make a few update posts for huge new releases regarding these topics,</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
