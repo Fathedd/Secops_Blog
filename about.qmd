@@ -23,4 +23,4 @@ I have been doing Security Operations for 11 years. Starting off with Blackhat o
 
 Nowadays I ethically explore both Red and Blue team topics. Some in depth. Stick around, you may learn something or find a resource not previously known!
 
-Languages: Rust, C/C++, ObjC, Ruby, Solidity, Python, Haskel, javascript
+Languages: Rust, C/C++, ObjC, Swift, Python, Ruby, Solidity, Java, Javascript, Lisp

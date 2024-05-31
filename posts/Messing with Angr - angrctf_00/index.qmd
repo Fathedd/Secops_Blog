@@ -1,0 +1,294 @@
+---
+title: "Messing with Angr - angrctf_00"
+author: "Rock3t"
+date: "2024-5-31"
+categories: [Reverse, Pwn, OffSec]
+---
+
+# Introduction, the awaiting storm...
+
+I have never worked with angr before. I just heard about it a few days ago and decided "Hey lets get our hands dirty". Dirty they got indeed, but it was 100% worth it. We start our journey in Arch Linux. Installing angr on arch is... troublesome. I eventually got angr-management to work, but it didn't like working, I wasn't motivated enough to get it working (didnt matter anyway as due to another story I figured out my cpu for some reason no longer liked arch's kernel, and kept erroring out due to cpu lock). I also wasn't motivated enough to solve that, I'm trying to do some binary stuff haha.
+
+## Finally getting an environment to work with
+
+As much as I do not like windows, I went over to windows, booted up a vm of Kali, and got cooking away.
+
+After getting all the basic kali stuff out of the way. We installed rizin_cutter and pulled the git project.
+
+Pulling the crackme from github:
+```
+git clone https://github.com/jakespringer/angr_ctf.git
+cd angr_ctf
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+now we should have a directory that has these few files:
+![](pics/Pasted image 20240530214322.png) 
+We have the source code, thats a bonus if we get stuck. 
+
+## Setting up the ctf
+
+On my kali system we run into issues with gcc not having the headers it needs. To fix this
+
+`sudo apt install gcc-multilib`
+
+To setup a challenge file you can use the packages.py then the directory containing the challenge.
+What we are going to do is just cd into the directory and build it there:
+```
+cd 00_angr_find/
+python3 generate.py 00_angr_find.c.jinja angrfind
+```
+
+
+Now we should have a binary file we can work with:
+
+![](pics/Pasted image 20240530215703.png)
+Lets run the program to see what she does
+![](pics/Pasted image 20240530215746.png)
+Okay. Program runs, asks for input, if input does not match hardcoded parameters we exit. Simple enough. 
+
+### Cutting it up
+
+Lets open cutter and tear into it. Make sure to load in write mode as we are going to have a little patching fun.... because we can lol.
+
+![](pics/Pasted image 20240530215923.png)
+
+You should see a similar dashboard. I call cutter a modern version of ghidra. Cutter uses Rizins framework, but Rizin and Ghidra are closely related through the existence of the rz-ghidra plugin. This plugin integrates the Ghidra decompiler engine into Rizin and Rizin-Cutter, allowing the Ghidra deep sleigh decompiler to work seamlessly within these environments.
+
+The first page is any and all information you would need about the binary in a fancy format.
+
+Over on the left is the imports. Looks like we have found main. Thats great! Lets go to main. In the screenshot I am using AT&T Syntax. I use at&t as I found it easier to quickly read. To switch yours to AT&T to see the difference and decide for yourself. Go to the global menu at the top > Edit > Preferences > Disassembly.
+
+![](pics/Pasted image 20240530220024.png)
+
+We will want to take a look at our strings to find the disassembly for the function we are trying to crack.
+![](pics/Pasted image 20240530220258.png)
+
+
+We want to switch over to the disassembly tab making sure we have the following selected:
+```
+0x0804a038       ;-- str.Good_Job.:
+0x0804a038          .string "Good Job." ; len=10
+```
+
+Wack X (or right click and click "xrefs") and you should see the xrefs to the functions calling the string:
+
+![](pics/Pasted image 20240530220714.png)
+
+Lets head over to see where this is being called in main
+
+![](pics/Pasted image 20240530220810.png)
+
+This is the goods. We see the strcmp then the jump to a different address  (which is highlighted in screenshot). If we want we can view this in the decompiler as well. 
+
+![](pics/Pasted image 20240530221411.png)
+
+
+Looking at this in a **fun** perspective, we have three options here. 
+- Finding a Valid key ourselves (time consuming)
+- Patching to bypass (Too Skiddy)
+- Finding a Valid key with Angr. (preferred)
+
+In the following sections we are going to go over using the angr framework.
+
+# Building an Exploit Script with Angr
+
+### What is Angr?
+
+Angr is an open-source binary analysis platform for Python, combining static and dynamic symbolic analysis to tackle a wide range of tasks. It provides a suite of Python libraries that enable disassembly, program instrumentation, symbolic execution, control-flow analysis, data-dependency analysis, value-set analysis, and decompilation among other functionalities. Angr is developed by a collaborative effort involving the Computer Security Lab at UC Santa Barbara, SEFCOM at Arizona State University, Shellphish, and the broader open-source community, aiming to offer a platform-agnostic framework for binary analysis. 
+P.S no I am not a student there, just some nerd that found it lol.
+
+### What is Symbolic Execution?
+
+Symbolic execution in Angr is a powerful technique for analyzing binaries that treats every variable as a symbolic value and every decision point (branch) as a constraint. This approach allows the analysis to explore all possible execution paths through a program by systematically evaluating the impact of different values on the program's behavior. Instead of running the program with actual inputs, symbolic execution uses symbolic inputs that stand for arbitrary values, akin to variables in algebra. This enables the exploration of all potential states the program can reach, depending on the input values, without having to execute the program concretely for each possibility.
+
+### Coding the 'Exploit' Script
+
+Opening up the scaffold_00.py file we find something similar to this:
+
+```python
+# Before you begin, here are a few notes about these capture-the-flag
+# challenges.
+#
+# Each binary, when run, will ask for a password, which can be entered via stdin
+# (typing it into the console.) Many of the levels will accept many different
+# passwords. Your goal is to find a single password that works for each binary.
+#
+# If you enter an incorrect password, the program will print "Try again." If you
+# enter a correct password, the program will print "Good Job."
+#
+# Each challenge will be accompanied by a file like this one, named
+# "scaffoldXX.py". It will offer guidance as well as the skeleton of a possible
+# solution. You will have to edit each file. In some cases, you will have to
+# edit it significantly. While use of these files is recommended, you can write
+# a solution without them, if you find that they are too restrictive.
+#
+# Places in the scaffoldXX.py that require a simple substitution will be marked
+# with three question marks (???). Places that require more code will be marked
+# with an ellipsis (...). Comments will document any new concepts, but will be
+# omitted for concepts that have already been covered (you will need to use
+# previous scaffoldXX.py files as a reference to solve the challenges.) If a
+# comment documents a part of the code that needs to be changed, it will be
+# marked with an exclamation point at the end, on a separate line (!).
+
+import angr
+import sys
+
+def main(argv):
+  # Create an Angr project.
+  # If you want to be able to point to the binary from the command line, you can
+  # use argv[1] as the parameter. Then, you can run the script from the command
+  # line as follows:
+  # python ./scaffold00.py [binary]
+  # (!)
+  path_to_binary = ???  # :string
+  project = angr.Project(path_to_binary)
+
+  # Tell Angr where to start executing (should it start from the main()
+  # function or somewhere else?) For now, use the entry_state function
+  # to instruct Angr to start from the main() function.
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
+
+  # Create a simulation manager initialized with the starting state. It provides
+  # a number of useful tools to search and execute the binary.
+  simulation = project.factory.simgr(initial_state)
+
+  # Explore the binary to attempt to find the address that prints "Good Job."
+  # You will have to find the address you want to find and insert it here. 
+  # This function will keep executing until it either finds a solution or it 
+  # has explored every possible path through the executable.
+  # (!)
+  print_good_address = ???  # :integer (probably in hexadecimal)
+  simulation.explore(find=print_good_address)
+
+  # Check that we have found a solution. The simulation.explore() method will
+  # set simulation.found to a list of the states that it could find that reach
+  # the instruction we asked it to search for. Remember, in Python, if a list
+  # is empty, it will be evaluated as false, otherwise true.
+  if simulation.found:
+    # The explore method stops after it finds a single state that arrives at the
+    # target address.
+    solution_state = simulation.found[0]
+
+    # Print the string that Angr wrote to stdin to follow solution_state. This 
+    # is our solution.
+    print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
+  else:
+    # If Angr could not find a path that reaches print_good_address, throw an
+    # error. Perhaps you mistyped the print_good_address?
+    raise Exception('Could not find the solution')
+
+if __name__ == '__main__':
+  main(sys.argv)
+
+
+```
+
+I highly suggest reading the default comments from the scaffold.py to have a high level overview of how everything is working. If you need a more visual representation resort to these few resources:
+
+Official Blog:
+https://angr.io/blog/throwing_a_tantrum_part_1/
+
+Youtube Vid by elbee:
+https://www.youtube.com/watch?v=QkVzjn3z0iw
+
+
+
+## Setting up a Custom Script
+
+We are going to shorten the script quite a bit removing all the comments and adding a few nice features.
+
+*Main:*
+```python
+import angr
+import sys
+
+def main(argv):
+  path_to_binary = argv[1]  # :string
+  project = angr.Project(path_to_binary)
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
+
+  simulation = project.factory.simgr(initial_state)
+
+  faddr = ???
+  baddr = ???
+  print_good_address = faddr  # :integer (probably in hexadecimal)
+  simulation.explore(find=print_good_address, avoid = baddr)
+
+  if len(simulation.found) > 0:
+    solution_state = simulation.found[0]
+
+    print("[*] Flag found: " + solution_state.posix.dumps(sys.stdin.fileno()).decode())
+  else:
+    raise Exception(f'Could not find Path to address {hex(faddr)}')
+
+if __name__ == '__main__':
+  main(sys.argv)
+
+```
+
+What we have decided to do here is do the standard project setup but we will be passing the program we want to load as an argument to the program with 
+
+*Snippet:*
+```python
+def main(argv):
+  path_to_binary = argv[1]  # :string
+```
+
+As well we are going to have some basic error handling to prevent some headbashing (if needed)
+
+*Snippet:*
+```python 
+  if len(simulation.found) > 0:
+    solution_state = simulation.found[0]
+
+    print("[*] Flag found: " + solution_state.posix.dumps(sys.stdin.fileno()).decode())
+  else:
+    raise Exception(f'Could not find Path to address {hex(faddr)}')
+```
+
+If the length of the data we receive is 0 we error out. For good measure we include the address we were targeting in the error output.
+
+## Final Setup
+
+Great you have gotten this far! We are almost done. The only thing we have to do now is give our script the address we want to find, then the address we want to avoid. 
+
+If we go back to cutter we can see:
+
+![](pics/Pasted image 20240530224124.png)
+
+We see our good address is `0x080492bd` and the bad address `0x080492ab`
+
+we simply change 
+
+```python
+  simulation = project.factory.simgr(initial_state)
+
+  faddr = ??? --> 0x08492bd
+  baddr = ??? --> 0x08492ab
+  print_good_address = faddr  # :integer (probably in hexadecimal)
+  simulation.explore(find=print_good_address, avoid = baddr)
+```
+
+Now if we do 
+
+`python3 customscript.py angrfind`
+
+we should get the flag:
+
+![](pics/Pasted image 20240530224854.png)
+
+Awesome! We just used symbolic execution to force our way in!
+
+## Bonus: Patching and Reconstructing the Binary
+
+This is just super  fun to do. We are just going to patch the binary to tell us Good_Job. 
+This binary is actually a little tricky to patch. I was going to include this section in this blog post. But patching a relatively complex function is a whole other topic we will cover in an up and coming blog post.

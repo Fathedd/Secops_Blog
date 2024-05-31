@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Messing with Angr - angrctf_00/index.html",
       "/posts/iFindMem Dev Notes/index.html",
       "/posts/ddwrt-embedded-firmware/index.html"
     ]
